@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="static/css/registration.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
+<body>
+    <div class="register">
+        <form class="reg-form" action="{% url 'register' %}" name="form" id="register" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <br><br>
+
+            <div class="form-header">
+                <h1>Registration Form</h1>
+            </div>
+           
+            <div class="form-group">
+                <input type="text" class="form-input" id="full_name" name="full_name" placeholder="full name*">
+                <span id="name_error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="date" class="form-input" id="date" name="dateofbirth" placeholder='' >
+                <span id="date_error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <select class="form-input" name="gender" id="gender" class="w-100">
+                    <option value="">gender*</option>
+                    <option value="male">male</option>
+                    <option value="female">female</option>
+                </select>
+                <span id="gender_error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="tel" class="form-input" id="mobile_number" name="mobile_number" placeholder="mobile number*">
+                <span id="mob_error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="email" class="form-input" id="email_id" name="email_id" placeholder="email id *">
+                <span id="email_error" class="error"></span>
+            </div>
+           
+            <div class="form-group">
+                <input type="text" class="form-input" id="home_town" name="home_town" placeholder="hometown*">
+                <span id="home_error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="text" class="form-input" name="Username" id="user_name" placeholder="username (preferred)*">
+                <span id="user_error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="password" class="form-input" id="password" name="password" placeholder="password (preferred)*">
+                <span id="pass_error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="btnc">
+                    <button class="form-button" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            let valid = true;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error').forEach(span => span.innerText = "");
+
+            // Full name validation
+            const fullName = document.getElementById('full_name').value;
+            if (fullName === "") {
+                document.getElementById('name_error').innerText = "Full name is required.";
+                document.getElementById('full_name').focus();
+                return false;
+            }
+
+            // Date of birth validation
+            const dateOfBirth = document.getElementById('date').value;
+            if (dateOfBirth === "") {
+                document.getElementById('date_error').innerText = "Date of birth is required.";
+                document.getElementById('date').focus();
+                return false;
+            }
+
+            // Gender validation
+            const gender = document.getElementById('gender').value;
+            if (gender === "") {
+                document.getElementById('gender_error').innerText = "Gender is required.";
+                document.getElementById('gender').focus();
+                return false;
+            }
+
+            // Mobile number validation
+            const mobileNumber = document.getElementById('mobile_number').value;
+            const mobilePattern = /^[0-9]{10}$/;
+            if (mobileNumber === "" || !mobilePattern.test(mobileNumber)) {
+                document.getElementById('mob_error').innerText = "Valid mobile number is required.";
+                document.getElementById('mobile_number').focus();
+                return false;
+            }
+
+            // Email validation
+            const email = document.getElementById('email_id').value;
+            const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+            if (email === "" || !emailPattern.test(email)) {
+                document.getElementById('email_error').innerText = "Valid email is required.";
+                document.getElementById('email_id').focus();
+                return false;
+            }
+
+            // Hometown validation
+            const homeTown = document.getElementById('home_town').value;
+            if (homeTown === "") {
+                document.getElementById('home_error').innerText = "Hometown is required.";
+                document.getElementById('home_town').focus();
+                return false;
+            }
+
+            // Username validation
+            const username = document.getElementById('user_name').value;
+            if (username === "") {
+                document.getElementById('user_error').innerText = "Username is required.";
+                document.getElementById('user_name').focus();
+                return false;
+            }
+
+            // Password validation
+            const password = document.getElementById('password').value;
+            if (password === "") {
+                document.getElementById('pass_error').innerText = "Password is required.";
+                document.getElementById('password').focus();
+                return false;
+            }
+
+            // Show success message using sweetalert
+            if (valid) {
+                event.preventDefault(); // Prevent form from submitting
+                swal("Success!", "Form submitted successfully!", "success").then(() => {
+                    document.getElementById('register').submit(); // Submit form after showing the alert
+                });
+            }
+
+            return valid;
+        }
+    </script>
+</body>
+</html>
